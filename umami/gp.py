@@ -25,7 +25,6 @@ gp.py contains utility functions related to computation in Gaussian processes.
 import numpy as np
 import scipy.linalg as spla
 import scipy.optimize as spo
-import scipy.io as sio
 import weave
     
 SQRT_3 = np.sqrt(3.0)

@@ -25,10 +25,9 @@ import tempfile
 import cPickle
 
 import numpy        as np
-import numpy.random as npr
 
-from Locker import Locker, os, sys
-from sobol_lib import i4_sobol_generate, size
+from Locker import Locker
+from sobol_lib import i4_sobol_generate
 
 CANDIDATE_STATE = 0
 SUBMITTED_STATE = 1
