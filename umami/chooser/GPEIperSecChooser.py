@@ -31,8 +31,8 @@ import scipy.stats    as sps
 import scipy.optimize as spo
 import cPickle
 
-from umami.helpers import *
-from umami.Locker  import *
+from umami.helpers import log, os, tempfile
+from umami.Locker import Locker, os, time
 
 def init(expt_dir, arg_string):
     args = util.unpack_args(arg_string)

@@ -1,5 +1,5 @@
 import math
-from numpy import *
+from numpy import bitwise_xor, math, mod, poly, size, size, zeros
 def i4_bit_hi1 ( n ):
 #*****************************************************************************80
 #

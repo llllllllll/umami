@@ -33,8 +33,8 @@ import scipy.optimize as spo
 import cPickle
 import multiprocessing
 
-from umami.helpers import *
-from umami.Locker  import *
+from umami.helpers import log, os, tempfile
+from umami.Locker import Locker, os, time
 
 def optimize_pt(c, b, comp, pend, vals, model):
     ret = spo.fmin_l_bfgs_b(model.grad_optimize_ei_over_hypers,
