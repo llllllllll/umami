@@ -35,8 +35,8 @@ import matplotlib.pyplot as plt
 import multiprocessing
 import copy
 
-from umami.helpers import *
-from umami.Locker  import *
+from umami.helpers import log, os, tempfile
+from umami.Locker import Locker, os, time
 
 # Wrapper function to pass to parallel ei optimization calls
 def optimize_pt(c, b, comp, pend, vals, labels, model):

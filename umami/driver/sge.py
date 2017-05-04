@@ -5,7 +5,7 @@ import subprocess
 import drmaa
 
 from dispatch import DispatchDriver
-from umami.helpers  import *
+from umami.helpers import job_file_for, job_output_file, log, subprocess, sys
 
 
 # TODO: figure out if these modules are necessary, or if they can be handled in
