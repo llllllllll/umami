@@ -29,8 +29,8 @@ import scipy.linalg as spla
 import scipy.stats as sps
 import cPickle
 
-from umami.Locker import Locker, os
-from umami.helpers import log, os, tempfile
+from umami.Locker import Locker
+from umami.helpers import log
 
 
 def init(expt_dir, arg_string):

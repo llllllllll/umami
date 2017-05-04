@@ -3,12 +3,9 @@ import os
 import traceback
 import time
 
-import numpy as np
-
 from  .ExperimentGrid import ExperimentGrid
 from .helpers import (
     log,
-    sh,
     redirect_output,
     job_output_file,
     save_job,

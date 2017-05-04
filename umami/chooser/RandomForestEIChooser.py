@@ -5,7 +5,6 @@ import sklearn.ensemble
 import sklearn.ensemble.forest
 from umami import util
 
-from sklearn.externals.joblib import Parallel, delayed
 
 def init(expt_dir, arg_string):
     args = util.unpack_args(arg_string)

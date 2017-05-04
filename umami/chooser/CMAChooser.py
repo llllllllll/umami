@@ -1,6 +1,6 @@
 from cma import CMAEvolutionStrategy
 from umami import util
-import Locker
+
 
 def init(expt_dir, arg_string):
     args = util.unpack_args(arg_string)
