@@ -317,7 +317,7 @@ def unitdoctest():
         >>> assert(r[2] < 13000)  # only passed with CMA_dampsvec_fac
 
 
-	:See: cma.main(), cma._test()
+    :See: cma.main(), cma._test()
 
     """
 
