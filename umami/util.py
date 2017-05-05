@@ -1,7 +1,7 @@
 ##
 # Copyright (C) 2012 Jasper Snoek, Hugo Larochelle and Ryan P. Adams
-# 
-# This code is written for research and educational purposes only to 
+#
+# This code is written for research and educational purposes only to
 # supplement the paper entitled
 # "Practical Bayesian Optimization of Machine Learning Algorithms"
 # by Snoek, Larochelle and Adams
@@ -11,12 +11,12 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import re
@@ -31,16 +31,16 @@ def unpack_args(str):
     else:
         return {}
 
-def slice_sample(init_x, logprob, sigma=1.0, step_out=True, max_steps_out=1000, 
+def slice_sample(init_x, logprob, sigma=1.0, step_out=True, max_steps_out=1000,
                  compwise=False, verbose=False):
     def direction_slice(direction, init_x):
         def dir_logprob(z):
             return logprob(direction*z + init_x)
-    
+
         upper = sigma*npr.rand()
         lower = upper - sigma
         llh_s = np.log(npr.rand()) + dir_logprob(0.0)
-    
+
         l_steps_out = 0
         u_steps_out = 0
         if step_out:
@@ -50,7 +50,7 @@ def slice_sample(init_x, logprob, sigma=1.0, step_out=True, max_steps_out=1000,
             while dir_logprob(upper) > llh_s and u_steps_out < max_steps_out:
                 u_steps_out += 1
                 upper       += sigma
-            
+
         steps_in = 0
         while True:
             steps_in += 1
@@ -72,7 +72,7 @@ def slice_sample(init_x, logprob, sigma=1.0, step_out=True, max_steps_out=1000,
             print "Steps Out:", l_steps_out, u_steps_out, " Steps In:", steps_in
 
         return new_z*direction + init_x
-    
+
     if not init_x.shape:
         init_x = np.array([init_x])
 
@@ -86,7 +86,7 @@ def slice_sample(init_x, logprob, sigma=1.0, step_out=True, max_steps_out=1000,
             direction[d] = 1.0
             cur_x = direction_slice(direction, cur_x)
         return cur_x
-            
+
     else:
         direction = npr.randn(dims)
         direction = direction / np.sqrt(np.sum(direction**2))

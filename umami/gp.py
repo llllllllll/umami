@@ -1,7 +1,7 @@
 ##
 # Copyright (C) 2012 Jasper Snoek, Hugo Larochelle and Ryan P. Adams
-# 
-# This code is written for research and educational purposes only to 
+#
+# This code is written for research and educational purposes only to
 # supplement the paper entitled
 # "Practical Bayesian Optimization of Machine Learning Algorithms"
 # by Snoek, Larochelle and Adams
@@ -11,12 +11,12 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
@@ -26,27 +26,27 @@ import numpy as np
 import scipy.linalg as spla
 import scipy.optimize as spo
 import weave
-    
+
 SQRT_3 = np.sqrt(3.0)
 SQRT_5 = np.sqrt(5.0)
 
 def dist2(ls, x1, x2=None):
     # Assumes NxD and MxD matrices.
     # Compute the squared distance matrix, given length scales.
-    
+
     if x2 is None:
         # Find distance with self for x1.
 
         # Rescale.
-        xx1 = x1 / ls        
+        xx1 = x1 / ls
         xx2 = xx1
 
     else:
         # Rescale.
         xx1 = x1 / ls
         xx2 = x2 / ls
-    
-    r2 = np.maximum(-(np.dot(xx1, 2*xx2.T) 
+
+    r2 = np.maximum(-(np.dot(xx1, 2*xx2.T)
                        - np.sum(xx1*xx1, axis=1)[:,np.newaxis]
                        - np.sum(xx2*xx2, axis=1)[:,np.newaxis].T), 0.0)
 
@@ -55,7 +55,7 @@ def dist2(ls, x1, x2=None):
 def grad_dist2(ls, x1, x2=None):
     if x2 is None:
         x2 = x1
-        
+
     # Rescale.
     x1 = x1 / ls
     x2 = x2 / ls
@@ -139,22 +139,22 @@ class GP:
         self.hyper_iters     = 1
         self.noiseless       = bool(int(noiseless))
         self.hyper_samples = []
-        
-        self.noise_scale = 0.1  # horseshoe prior 
+
+        self.noise_scale = 0.1  # horseshoe prior
         self.amp2_scale  = 1    # zero-mean log normal prior
-        self.max_ls      = 2    # top-hat prior on length scales 
+        self.max_ls      = 2    # top-hat prior on length scales
 
     def real_init(self, dims, values):
-        # Input dimensionality. 
+        # Input dimensionality.
         self.D = dims
 
-        # Initial length scales.               
+        # Initial length scales.
         self.ls = np.ones(self.D)
 
-        # Initial amplitude.        
+        # Initial amplitude.
         self.amp2 = np.std(values)
 
-        # Initial observation noise.                                          
+        # Initial observation noise.
         self.noise = 1e-3
 
         # Initial mean.
@@ -171,7 +171,7 @@ class GP:
             mean  = self.mean
             amp2  = self.amp2
             noise = self.noise
-            
+
             cov   = amp2 * (self.cov_func(self.ls, comp, None) + 1e-6*np.eye(comp.shape[0])) + noise*np.eye(comp.shape[0])
             chol  = spla.cholesky(cov, lower=True)
             solve = spla.cho_solve((chol, True), vals - mean)
@@ -201,7 +201,7 @@ class GP:
                     print "Covariance matrix not PSD, adding jitter:", jitter
                     passed = False
             return val
-        
+
         def memoize(amp2, noise, ls):
             if ( 'corr' not in state
                  or state['amp2'] != amp2
@@ -210,9 +210,9 @@ class GP:
 
                 # Get the correlation matrix
                 (corr, grad_corr) = self.cov_func(ls, comp, None, grad=True)
-        
+
                 # Scale and add noise & jitter.
-                covmat = (amp2 * (corr + 1e-6*np.eye(comp.shape[0])) 
+                covmat = (amp2 * (corr + 1e-6*np.eye(comp.shape[0]))
                           + noise * np.eye(comp.shape[0]))
 
                 # Memoize
@@ -222,7 +222,7 @@ class GP:
                 state['amp2']      = amp2
                 state['noise']     = noise
                 state['ls']        = ls
-                
+
             return (state['chol'], state['corr'], state['grad_corr'])
 
         def nlogprob(hypers):
@@ -262,27 +262,27 @@ class GP:
             #grad -= 2*hypers/self.hyper_prior
 
             return -grad
-        
+
         # Initial length scales.
         self.ls = np.ones(self.D)
         # Initial amplitude.
         self.amp2 = np.std(vals)
         # Initial observation noise.
         self.noise = 1e-3
-        
+
         hypers     = np.zeros(self.ls.shape[0]+2)
         hypers[0]  = np.log(self.amp2)
         hypers[1]  = np.log(self.noise)
         hypers[2:] = np.log(self.ls)
-        
-        # Use a bounded bfgs just to prevent the length-scales and noise from 
+
+        # Use a bounded bfgs just to prevent the length-scales and noise from
         # getting into regions that are numerically unstable
         b = [(-10,10),(-10,10)]
         for i in range(comp.shape[1]):
             b.append((-10,5))
-  
+
         hypers = spo.fmin_l_bfgs_b(nlogprob, hypers, grad_nlogprob, args=(), bounds=b, disp=0)
-                
+
         #hypers = spo.fmin_bfgs(nlogprob, hypers, grad_nlogprob, maxiter=100)
         hypers = hypers[0]
         #hypers = spo.fmin_bfgs(nlogprob, hypers, grad_nlogprob, maxiter=100)
@@ -308,7 +308,7 @@ def main():
         x = np.linspace(0,1,100)[:,np.newaxis]*10
         K = mygp.cov(x)
         y = np.random.randn(100)
-    
+
         fsamp = mygp.mean + np.dot(spla.cholesky(K).transpose(), y)
         try:
             plt.plot(x, fsamp)
@@ -318,11 +318,11 @@ def main():
     print 'Loglikelihood before optimizing: ', mygp.logprob(x,y)
     mygp.optimize_hypers(x,y)
     print 'Loglikelihood after optimizing: ', mygp.logprob(x,y)
-        
+
     try:
         plt.show()
     except:
-        print 'Install matplotlib to get figures'        
+        print 'Install matplotlib to get figures'
 
 if __name__ == '__main__':
     main()
