@@ -67,7 +67,7 @@ class GPEIOptChooser:
         self.needs_burnin    = True
         self.pending_samples = int(pending_samples)
         self.D               = -1
-        self.hyper_iters     = 1        
+        self.hyper_iters     = 1
         # Number of points to optimize EI over
         self.grid_subset     = int(grid_subset)
         self.noiseless       = bool(int(noiseless))
@@ -134,8 +134,8 @@ class GPEIOptChooser:
 
         try:
             output = (
-                '<br /><span class=\"label label-info\">Estimated mean:</span> ' + str(mean_mean) + 
-                '<br /><span class=\"label label-info\">Estimated noise:</span> ' + str(mean_noise) + 
+                '<br /><span class=\"label label-info\">Estimated mean:</span> ' + str(mean_mean) +
+                '<br /><span class=\"label label-info\">Estimated noise:</span> ' + str(mean_noise) +
                 '<br /><br /><span class=\"label label-info\">Inverse parameter sensitivity' +
                 ' - Gaussian Process length scales</span><br /><br />' +
                 '<div id=\"lschart\"></div><script type=\"text/javascript\">' +

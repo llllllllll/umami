@@ -12,7 +12,7 @@ def i4_bit_hi1 ( n ):
 #       0           0     0
 #       1           1     1
 #       2          10     2
-#       3          11     2 
+#       3          11     2
 #       4         100     3
 #       5         101     3
 #       6         110     3
@@ -72,7 +72,7 @@ def i4_bit_lo0 ( n ):
 #       0           0     1
 #       1           1     2
 #       2          10     1
-#       3          11     3 
+#       3          11     3
 #       4         100     1
 #       5         101     2
 #       6         110     1
@@ -121,7 +121,7 @@ def i4_bit_lo0 ( n ):
 
 		i = i2
 	return bit
-	
+
 def i4_sobol_generate ( m, n, skip ):
 #*****************************************************************************80
 #
@@ -193,7 +193,7 @@ def i4_sobol ( dim_num, seed ):
 #
 #		Bennett Fox,
 #		Algorithm 647:
-#		Implementation and Relative Efficiency of Quasirandom 
+#		Implementation and Relative Efficiency of Quasirandom
 #		Sequence Generators,
 #		ACM Transactions on Mathematical Software,
 #		Volume 12, Number 4, pages 362-376, 1986.
@@ -202,10 +202,10 @@ def i4_sobol ( dim_num, seed ):
 #		USSR Computational Mathematics and Mathematical Physics,
 #		Volume 16, pages 236-242, 1977.
 #
-#		Ilya Sobol, Levitan, 
-#		The Production of Points Uniformly Distributed in a Multidimensional 
+#		Ilya Sobol, Levitan,
+#		The Production of Points Uniformly Distributed in a Multidimensional
 #		Cube (in Russian),
-#		Preprint IPM Akad. Nauk SSSR, 
+#		Preprint IPM Akad. Nauk SSSR,
 #		Number 40, Moscow 1976.
 #
 #               Stephen Joe, Frances Kuo,
@@ -13513,7 +13513,7 @@ def i4_sobol ( dim_num, seed ):
 # 			1, 3, 7, 9, 5,13,13,11, 3,15, \
 # 			5, 3,15, 7, 9,13, 9, 1,11, 7, \
 # 			5,15, 1,15,11, 5, 3, 1, 7, 9 ])
-	
+
 # 		v[7:40,4] = transpose([ \
 # 			9, 3,27, \
 # 			15,29,21,23,19,11,25, 7,13,17, \
@@ -13548,20 +13548,20 @@ def i4_sobol ( dim_num, seed ):
 			213,  191,  253,  203,  211,  239,  247,  285,  369,  299,
 			301,  333,  351,  355,  357,  361,  391,  397,  425,  451,
 			463,  487,  501,  529,  539,  545,  557,  563,  601,  607,
-			617,  623,  631,  637,  647,  661,  675,  677,  687,  695, 
+			617,  623,  631,  637,  647,  661,  675,  677,  687,  695,
 			701,  719,  721,  731,  757,  761,  787,  789,  799,  803,
 			817,  827,  847,  859,  865,  875,  877,  883,  895,  901,
 			911,  949,  953,  967,  971,  973,  981,  985,  995, 1001,
 			1019, 1033, 1051, 1063, 1069, 1125, 1135, 1153, 1163, 1221,
 			1239, 1255, 1267, 1279, 1293, 1305, 1315, 1329, 1341, 1347,
 			1367, 1387, 1413, 1423, 1431, 1441, 1479, 1509, 1527, 1531,
-			1555, 1557, 1573, 1591, 1603, 1615, 1627, 1657, 1663, 1673, 
+			1555, 1557, 1573, 1591, 1603, 1615, 1627, 1657, 1663, 1673,
 			1717, 1729, 1747, 1759, 1789, 1815, 1821, 1825, 1849, 1863,
 			1869, 1877, 1881, 1891, 1917, 1933, 1939, 1969, 2011, 2035,
 			2041, 2053, 2071, 2091, 2093, 2119, 2147, 2149, 2161, 2171,
 			2189, 2197, 2207, 2217, 2225, 2255, 2257, 2273, 2279, 2283,
 			2293, 2317, 2323, 2341, 2345, 2363, 2365, 2373, 2377, 2385,
-			2395, 2419, 2421, 2431, 2435, 2447, 2475, 2477, 2489, 2503, 
+			2395, 2419, 2421, 2431, 2435, 2447, 2475, 2477, 2489, 2503,
 			2521, 2533, 2551, 2561, 2567, 2579, 2581, 2601, 2633, 2657,
 			2669, 2681, 2687, 2693, 2705, 2717, 2727, 2731, 2739, 2741,
 			2773, 2783, 2793, 2799, 2801, 2811, 2819, 2825, 2833, 2867,
@@ -13586,8 +13586,8 @@ def i4_sobol ( dim_num, seed ):
 			6237, 6289, 6295, 6329, 6383, 6427, 6453, 6465, 6501, 6523,
 			6539, 6577, 6589, 6601, 6607, 6631, 6683, 6699, 6707, 6761,
 			6795, 6865, 6881, 6901, 6923, 6931, 6943, 6999, 7057, 7079,
-			7103, 7105, 7123, 7173, 7185, 7191, 7207, 7245, 7303, 7327, 
-			7333, 7355, 7365, 7369, 7375, 7411, 7431, 7459, 7491, 7505, 
+			7103, 7105, 7123, 7173, 7185, 7191, 7207, 7245, 7303, 7327,
+			7333, 7355, 7365, 7369, 7375, 7411, 7431, 7459, 7491, 7505,
 			7515, 7541, 7557, 7561, 7701, 7705, 7727, 7749, 7761, 7783,
 			7795, 7823, 7907, 7953, 7963, 7975, 8049, 8089, 8123, 8125,
 			8137, 8219, 8231, 8245, 8275, 8293, 8303, 8331, 8333, 8351,
@@ -13672,8 +13672,8 @@ def i4_sobol ( dim_num, seed ):
 #	Check parameters.
 #
 		if ( dim_num < 1 or dim_max < dim_num ):
-			print 'I4_SOBOL - Fatal error!' 
-			print '	The spatial dimension DIM_NUM should satisfy:' 
+			print 'I4_SOBOL - Fatal error!'
+			print '	The spatial dimension DIM_NUM should satisfy:'
 			print '		1 <= DIM_NUM <= %d'%dim_max
 			print '	But this input value is DIM_NUM = %d'%dim_num
 			return
@@ -13844,7 +13844,7 @@ def i4_uniform ( a, b, seed ):
 #		Output, integer SEED, the updated seed.
 #
 	if ( seed == 0 ):
-		print 'I4_UNIFORM - Fatal error!' 
+		print 'I4_UNIFORM - Fatal error!'
 		print '	Input SEED = 0!'
 
 	seed = math.floor ( seed )
@@ -13919,7 +13919,7 @@ def prime_ge ( n ):
 #		Input, integer N, the number to be bounded.
 #
 #		Output, integer P, the smallest prime number that is greater
-#		than or equal to N.	
+#		than or equal to N.
 #
 	p = max ( math.ceil ( n ), 2 )
 	while ( not isprime ( p ) ):
@@ -13959,4 +13959,4 @@ def isprime(n):
 			return False
 		p+=1
 	return True
-	
+
