@@ -2288,7 +2288,7 @@ class CMAEvolutionStrategy(OOOptimizer):
                                     (sum(self.ps**2)/N - 1)))))
         if 11 < 3:
             # derandomized MSR = natural gradient descent using mean(z**2) instead of mu*mean(z)**2
-            lengths = array([sum(z**2)**0.5 for z in self.arz[fit.idx[:self.sp.mu]]])
+            lengths = array([sum(z_**2)**0.5 for z_ in self.arz[fit.idx[:self.sp.mu]]])
             # print lengths[0::int(self.sp.mu/5)]
             self.sigma *= np.exp(self.sp.mueff**0.5 * dot(self.sp.weights, lengths / self.const.chiN - 1))**(2/(N+1))
 
@@ -6553,14 +6553,14 @@ class FitnessFunctions(object):
         if rot:
             x = rotate(x)
         x = [x] if np.isscalar(x[0]) else x  # scalar into list
-        f = [x[0]**2 + cond * sum(x[1:]**2) for x in x]
+        f = [x_[0]**2 + cond * sum(x_[1:]**2) for x_ in x]
         return f if len(f) > 1 else f[0]  # 1-element-list into scalar
     def tablet(self, x, rot=0):
         """Tablet test objective function"""
         if rot:
             x = rotate(x)
         x = [x] if np.isscalar(x[0]) else x  # scalar into list
-        f = [1e6*x[0]**2 + sum(x[1:]**2) for x in x]
+        f = [1e6*x_[0]**2 + sum(x_[1:]**2) for x_ in x]
         return f if len(f) > 1 else f[0]  # 1-element-list into scalar
     def cigtab(self, y):
         """Cigtab test objective function"""
@@ -6616,7 +6616,7 @@ class FitnessFunctions(object):
     def rosen(self, x, alpha=1e2):
         """Rosenbrock test objective function"""
         x = [x] if np.isscalar(x[0]) else x  # scalar into list
-        f = [sum(alpha*(x[:-1]**2-x[1:])**2 + (1.-x[:-1])**2) for x in x]
+        f = [sum(alpha*(x_[:-1]**2-x_[1:])**2 + (1.-x_[:-1])**2) for x_ in x]
         return f if len(f) > 1 else f[0]  # 1-element-list into scalar
     def diffpow(self, x, rot=0):
         """Diffpow test objective function"""
@@ -6629,7 +6629,7 @@ class FitnessFunctions(object):
         return self.rosen(x[:N/2]) + self.elli(x[N/2:], cond=1)
     def ridge(self, x, expo=2):
         x = [x] if np.isscalar(x[0]) else x  # scalar into list
-        f = [x[0] + 100*np.sum(x[1:]**2)**(expo/2.) for x in x]
+        f = [x_[0] + 100*np.sum(x_[1:]**2)**(expo/2.) for x_ in x]
         return f if len(f) > 1 else f[0]  # 1-element-list into scalar
     def ridgecircle(self, x, expo=0.5):
         """happy cat by HG Beyer"""
@@ -6682,8 +6682,8 @@ class FitnessFunctions(object):
         """multimodal Schwefel function with domain -500..500"""
         y = [x] if np.isscalar(x[0]) else x
         N = len(y[0])
-        f = array([418.9829*N - 1.27275661e-5*N - sum(x * np.sin(np.abs(x)**0.5))
-                + pen_fac * sum((abs(x) > 500) * (abs(x) - 500)**2) for x in y])
+        f = array([418.9829*N - 1.27275661e-5*N - sum(x_ * np.sin(np.abs(x_)**0.5))
+                + pen_fac * sum((abs(x_) > 500) * (abs(x_) - 500)**2) for x_ in y])
         return f if len(f) > 1 else f[0]
     def optprob(self, x):
         n = np.arange(len(x)) + 1

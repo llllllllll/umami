@@ -379,7 +379,7 @@ class GPEIperSecChooser:
         func_time_m = np.exp(func_time_m)
 
         # Compute derivative of cross-distances.
-        grad_cross_r = gp.grad_dist2(self.time_ls, comp, cand)
+        # grad_cross_r = gp.grad_dist2(self.time_ls, comp, cand)
 
         # Apply covariance function
         cov_grad_func = getattr(gp, 'grad_' + self.cov_func.__name__)

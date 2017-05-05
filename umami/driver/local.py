@@ -11,8 +11,6 @@ class LocalDriver(DispatchDriver):
     def submit_job(self, job):
        '''Submit a job for local execution.'''
 
-       name = "%s-%08d" % (job['name'], job['id'])
-
        # TODO: figure out if this is necessary....
        locker = Locker()
        locker.unlock(grid_for(job))
