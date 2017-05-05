@@ -431,13 +431,9 @@ class GPConstrainedEIChooser:
         obsv_cov  = comp_cov + self.constraint_noise*np.eye(comp.shape[0])
         obsv_chol = spla.cholesky(obsv_cov, lower=True)
 
-        cov_grad_func = getattr(gp, 'grad_' + self.cov_func.__name__)
-        cand_cross_grad = cov_grad_func(self.constraint_ls, comp, cand)
-
         # Predictive things.
         # Solve the linear systems.
         alpha  = spla.cho_solve((obsv_chol, True), self.ff)
-        beta   = spla.solve_triangular(obsv_chol, cand_cross, lower=True)
 
         # Predict the marginal means and variances at candidates.
         func_m = np.dot(cand_cross.T, alpha)# + self.constraint_mean
@@ -575,10 +571,7 @@ class GPConstrainedEIChooser:
 
         # Now compute the gradients w.r.t. ei
         # The primary covariances for prediction.
-        comp_cov   = self.cov(self.amp2, self.ls, comp)
         cand_cross = self.cov(self.amp2, self.ls, comp, cand)
-        comp_cov_full   = self.cov(self.amp2, self.ls, compfull)
-        cand_cross_full = self.cov(self.amp2, self.ls, compfull, cand)
 
         # Create a composite vector of complete and pending.
         comp_pend = np.concatenate((comp, pend))
@@ -594,12 +587,6 @@ class GPConstrainedEIChooser:
 
         # Use the sub-Cholesky.
         obsv_chol = comp_pend_chol[:comp.shape[0],:comp.shape[0]]
-
-        # Compute the required Cholesky.
-        #obsv_cov  = comp_cov + self.noise*np.eye(comp.shape[0])
-        #obsv_chol = spla.cholesky(obsv_cov, lower=True)
-        obsv_cov_full  = comp_cov_full + self.noise*np.eye(compfull.shape[0])
-        obsv_chol_full = spla.cholesky( obsv_cov_full, lower=True)
 
         # Predictive things.
         # Solve the linear systems.
@@ -621,9 +608,6 @@ class GPConstrainedEIChooser:
         fant_vals = np.concatenate(
             (np.tile(vals[:,np.newaxis],
                      (1,self.pending_samples)), pend_fant))
-
-        # Compute bests over the fantasies.
-        bests = np.min(fant_vals, axis=0)
 
         # Now generalize from these fantasies.
         cand_cross = self.cov(self.amp2, self.ls, comp_pend, cand)
@@ -831,8 +815,6 @@ class GPConstrainedEIChooser:
 
             # Linear systems
             t_alpha  = spla.cho_solve((obsv_constraint_chol, True), self.ff)
-            t_beta   = spla.solve_triangular(obsv_constraint_chol,
-                                             cand_constraint_cross, lower=True)
 
             # Predict marginal mean times and (possibly) variances
             func_constraint_m = (np.dot(cand_constraint_cross.T, t_alpha))
@@ -846,16 +828,11 @@ class GPConstrainedEIChooser:
 
             # The primary covariances for prediction.
             comp_cov   = self.cov(self.amp2, self.ls, comp)
-            comp_cov_full = self.cov(self.amp2, self.ls, compfull)
             cand_cross = self.cov(self.amp2, self.ls, comp, cand)
-            cand_cross_full = self.cov(self.amp2, self.ls, compfull, cand)
 
             # Compute the required Cholesky.
             obsv_cov  = comp_cov + self.noise*np.eye(comp.shape[0])
-            obsv_cov_full  = (comp_cov_full +
-                              self.noise*np.eye(compfull.shape[0]))
             obsv_chol = spla.cholesky( obsv_cov, lower=True)
-            obsv_chol_full = spla.cholesky( obsv_cov_full, lower=True)
 
             # Solve the linear systems.
             alpha  = spla.cho_solve((obsv_chol, True), vals - self.mean)
@@ -978,16 +955,11 @@ class GPConstrainedEIChooser:
 
             # The primary covariances for prediction.
             comp_cov   = self.cov(self.amp2, self.ls, comp)
-            comp_cov_full = self.cov(self.amp2, self.ls, compfull)
             cand_cross = self.cov(self.amp2, self.ls, comp, cand)
-            cand_cross_full = self.cov(self.amp2, self.ls, compfull, cand)
 
             # Compute the required Cholesky.
             obsv_cov  = comp_cov + self.noise*np.eye(comp.shape[0])
-            obsv_cov_full  = (comp_cov_full +
-                              self.noise*np.eye(compfull.shape[0]))
             obsv_chol = spla.cholesky( obsv_cov, lower=True )
-            obsv_chol_full = spla.cholesky( obsv_cov_full, lower=True )
 
             # Solve the linear systems.
             alpha  = spla.cho_solve((obsv_chol, True), vals - self.mean)
@@ -1074,26 +1046,13 @@ class GPConstrainedEIChooser:
         def updateGain(gain):
             if gain < 0.01 or gain > 10:
                 return -np.inf
-
-            cov   = (self.constraint_amp2 * (self.cov_func(
-                        self.constraint_ls, comp, None) +
-                                             1e-6*np.eye(comp.shape[0])) +
-                     self.constraint_noise*np.eye(comp.shape[0]))
-            chol  = spla.cholesky(cov, lower=True)
-            solve = spla.cho_solve((chol, True), vals)
             lp   = lpProbit(self.ff, gain)
-
             return lp
 
         def logprob(ls):
             if np.any(ls < 0) or np.any(ls > self.constraint_max_ls):
                 return -np.inf
-
-            cov   = self.constraint_amp2 * (self.cov_func(ls, comp, None) + 1e-6*np.eye(comp.shape[0])) + self.constraint_noise*np.eye(comp.shape[0])
-            chol  = spla.cholesky(cov, lower=True)
-            solve = spla.cho_solve((chol, True), self.ff)
             lp   = lpProbit(self.ff)
-
             return lp
 
         hypers = util.slice_sample(self.constraint_ls, logprob, compwise=True)
