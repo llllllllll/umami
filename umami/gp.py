@@ -59,10 +59,12 @@ def grad_dist2(ls, x1, x2=None):
     # Rescale.
     x1 = x1 / ls
     x2 = x2 / ls
-    
-    N = x1.shape[0]
-    M = x2.shape[0]
-    D = x1.shape[1]
+
+    # XXX: These variables are used in the weave call below.
+    N = x1.shape[0]  # NOQA: F841
+    M = x2.shape[0]  # NOQA: F841
+    D = x1.shape[1]  # NOQA: F841
+
     gX = np.zeros((x1.shape[0],x2.shape[0],x1.shape[1]))
 
     code = \
@@ -100,7 +102,6 @@ def ARDSE(ls, x1, x2=None, grad=False):
 
 def grad_ARDSE(ls, x1, x2=None):
     r2 = dist2(ls, x1, x2)
-    r  = np.sqrt(r2)
     return -0.5*np.exp(-0.5*r2)[:,:,np.newaxis] * grad_dist2(ls, x1, x2)
 
 def Matern32(ls, x1, x2=None, grad=False):

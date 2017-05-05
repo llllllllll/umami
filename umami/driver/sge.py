@@ -28,7 +28,6 @@ class SGEDriver(DispatchDriver):
     def submit_job(self, job):
         output_file = job_output_file(job)
         job_file    = job_file_for(job)
-        modules     = " ".join(DEFAULT_MODULES)
         mint_path   = sys.argv[0]
         sge_script  = 'python %s --run-job "%s" .' % (mint_path, job_file)
 
